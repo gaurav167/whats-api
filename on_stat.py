@@ -18,10 +18,8 @@ class onlineStatus:
 				header = driver.find_element_by_id('main')
 				body = header.find_element_by_class_name('chat-body')
 				try:
-					print('1')
 					time.sleep(5)
 					online = body.find_element_by_class_name('chat-secondary').find_element_by_class_name('emojitext').text
-					print('2')
 					if online == "online" or online == "typing...":
 						print('Yay! :)')
 				except:
