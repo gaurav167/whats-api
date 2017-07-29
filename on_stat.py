@@ -1,5 +1,6 @@
 from selenium import webdriver
 import time
+#from datetime import datetime
 
 class onlineStatus:
 	def __init__(self,labels):
@@ -17,14 +18,28 @@ class onlineStatus:
 				chat.click()
 				header = driver.find_element_by_id('main')
 				body = header.find_element_by_class_name('chat-body')
-				try:
-					time.sleep(5)
-					online = body.find_element_by_class_name('chat-secondary').find_element_by_class_name('emojitext').text
-					if online == "online" or online == "typing...":
-						print('Yay! :)')
-				except:
-					print('Nay :(')
-
+				time.sleep(5)
+				on_stat = False  #Set initial online status to False ,i.e, Not Online
+				while True:
+					try:
+						online = body.find_element_by_class_name('chat-secondary').find_element_by_class_name('emojitext').text
+						if online == "online" or online == "typing...":
+							if on_stat == False:
+								on_stat = True
+								on_info = "\n" + self.labels[0] + " : From : " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
+								f = open('logs.txt','a')
+								f.write(on_info)
+								f.close()
+					except KeyboardInterrupt:
+						break
+					except:
+						if on_stat == True:
+							on_stat = False
+							on_info = " Till : " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
+							f = open('logs.txt','a')
+							f.write(on_info)
+							f.close()
+						pass
 
 obj = onlineStatus(['Mom'])
 obj.checkOnStatus()
